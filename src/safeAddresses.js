@@ -5,7 +5,7 @@ export const safeAddresses = [
   { label: "MSS ADPC Payroll", address: "0x13d4Ff2A83fBCB8F5fc73cE66CF5928eD0943cB0" },
   { label: "MSS Arbitrum Off-site", address: "0x0F84fa246941883Ff9ab114382Aa221CF8b6d650" },
   { label: "MSS Stylus Sprint", address: "0x0BDAFB92718759fdb1A90AF6A7455e7Cf300eB73" },
-  { label: "GCP Multisig", address: "0xAe8cBcef7DE8664C3fF5BfC58536c183FfA60B51"},
+  { label: "GCP Multisig", address: "0xAe8cBcef7DE8664C3fF5BfC58536c183FfA60B51" },
   { label: "Long-Term Incentive Pilot Program", address: "0x544cBe6698E2e3b676C76097305bBa588dEfB13A" },
   { label: "Plurality Labs", address: "0xC158b555F0B1ddd7F4D4f97Fd2a9acd144f8e0D4" },
   { label: "The Rarible Protocol", address: "0x8ac412F1eB56B01ba910C71f4Fad1c7f70Efb4E5" },
