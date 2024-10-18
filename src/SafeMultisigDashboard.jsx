@@ -5,6 +5,8 @@ import { safeAddresses } from './safeAddresses';
 import { safeAbi } from './abis';
 import { ARB_TOKEN_ADDRESS, USDC_TOKEN_ADDRESS, USDCB_TOKEN_ADDRESS } from './TokenAddresses';
 import SafeCard from './SafeCard';
+import arbitrumLogo from './images/arbitrum_logo.png';
+import entropyLogo from './images/entropy_logo_circle copy.png';
 
 const RPC_ENDPOINT = process.env.REACT_APP_ARBITRUM_RPC;
 
@@ -136,9 +138,11 @@ const SafeMultisigDashboard = () => {
 
   return (
     <div className="safe-multisig-dashboard">
-      <h1 className="dashboard-title">
-        Arbitrum DAO Multisigs
-      </h1>
+      <div className="dashboard-header">
+        <img src={entropyLogo} alt="Entropy Logo" className="header-logo entropy-logo" />
+        <h1 className="dashboard-title">Arbitrum DAO Multisigs</h1>
+        <img src={arbitrumLogo} alt="Arbitrum Logo" className="header-logo arbitrum-logo" />
+      </div>
       <div className="safe-grid">
         {safeData.map((safe) => (
           <SafeCard key={safe.address} safe={safe} prices={prices} />
@@ -147,5 +151,6 @@ const SafeMultisigDashboard = () => {
     </div>
   );
 };
+
 
 export default SafeMultisigDashboard;
