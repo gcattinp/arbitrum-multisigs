@@ -1,11 +1,7 @@
 import React, { useState } from 'react';
 import { Card, CardHeader, CardContent } from './components/ui/card';
 import TransactionModal from './TransactionModal';
-
-const truncateAddress = (address, startLength = 6, endLength = 4) => {
-  if (!address) return '';
-  return `${address.slice(0, startLength)}...${address.slice(-endLength)}`;
-};
+import { getNameOrAddress } from './addressMapping';
 
 const formatUSD = (value) => {
   return new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD' }).format(value);
@@ -27,6 +23,28 @@ const SafeCard = ({ safe, prices }) => {
 
   return (
     <>
+      <style>{`
+        .signers-list {
+          list-style: none;
+          padding: 0;
+          margin: 0;
+        }
+
+        .signer-address {
+          text-align: left;
+          padding: 2px 0;
+          white-space: nowrap;
+          overflow: hidden;
+          text-overflow: ellipsis;
+        }
+
+        .balance-info p {
+          display: flex;
+          justify-content: space-between;
+          align-items: center;
+        }
+      `}</style>
+
       <Card onClick={handleCardClick}>
         <CardHeader>
           <h2 className="safe-label">{safe.label}</h2>
@@ -45,7 +63,7 @@ const SafeCard = ({ safe, prices }) => {
                   <ul className="signers-list">
                     {safe.owners.map((owner) => (
                       <li key={owner} className="signer-address" title={owner}>
-                        {truncateAddress(owner)}
+                        {getNameOrAddress(owner)}
                       </li>
                     ))}
                   </ul>

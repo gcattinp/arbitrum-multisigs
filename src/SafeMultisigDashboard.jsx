@@ -47,6 +47,7 @@ const SafeMultisigDashboard = () => {
   const [safeData, setSafeData] = useState([]);
   const [error, setError] = useState(null);
   const [prices, setPrices] = useState({ eth: 0, arb: 0, usdc: 1 });
+  const [searchTerm, setSearchTerm] = useState('');
 
   const fetchPrices = async () => {
     try {
@@ -132,6 +133,12 @@ const SafeMultisigDashboard = () => {
     fetchSafeData();
   }, []);
 
+  // Filter safes based on search term
+  const filteredSafes = safeData.filter(safe =>
+    safe.label.toLowerCase().includes(searchTerm.toLowerCase()) ||
+    safe.address.toLowerCase().includes(searchTerm.toLowerCase())
+  );
+
   if (error) {
     return <div className="error-message">Error: {error}</div>;
   }
@@ -143,14 +150,24 @@ const SafeMultisigDashboard = () => {
         <h1 className="dashboard-title">Arbitrum DAO Multisigs</h1>
         <img src={arbitrumLogo} alt="Arbitrum Logo" className="header-logo arbitrum-logo" />
       </div>
+
+      <div className="search-container">
+        <input
+          type="text"
+          placeholder="Search by multisig name or address..."
+          className="search-input"
+          value={searchTerm}
+          onChange={(e) => setSearchTerm(e.target.value)}
+        />
+      </div>
+
       <div className="safe-grid">
-        {safeData.map((safe) => (
+        {filteredSafes.map((safe) => (
           <SafeCard key={safe.address} safe={safe} prices={prices} />
         ))}
       </div>
     </div>
   );
 };
-
 
 export default SafeMultisigDashboard;

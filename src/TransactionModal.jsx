@@ -1,9 +1,5 @@
 import React, { useState, useEffect, useCallback } from 'react';
-
-const truncateAddress = (address, startLength = 6, endLength = 4) => {
-  if (!address) return '';
-  return `${address.slice(0, startLength)}...${address.slice(-endLength)}`;
-};
+import { getNameOrAddress } from './addressMapping';
 
 const TransactionModal = ({ safeAddress, safeLabel, onClose }) => {
   const [transactions, setTransactions] = useState([]);
@@ -14,7 +10,6 @@ const TransactionModal = ({ safeAddress, safeLabel, onClose }) => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        // Fetch transactions
         const txResponse = await fetch(`https://safe-transaction-arbitrum.safe.global/api/v1/safes/${safeAddress}/multisig-transactions/`);
         if (!txResponse.ok) {
           throw new Error('Failed to fetch transactions');
@@ -22,7 +17,6 @@ const TransactionModal = ({ safeAddress, safeLabel, onClose }) => {
         const txData = await txResponse.json();
         setTransactions(txData.results);
 
-        // Fetch all signers (owners) of the safe
         const ownersResponse = await fetch(`https://safe-transaction-arbitrum.safe.global/api/v1/safes/${safeAddress}/`);
         if (!ownersResponse.ok) {
           throw new Error('Failed to fetch safe owners');
@@ -52,28 +46,58 @@ const TransactionModal = ({ safeAddress, safeLabel, onClose }) => {
     const nonces = transactions.map(tx => tx.nonce).sort((a, b) => a - b);
 
     return (
-      <table className="signer-participation-table">
-        <thead>
-          <tr>
-            <th>Signer</th>
-            {nonces.map(nonce => (
-              <th key={nonce}>{nonce}</th>
-            ))}
-          </tr>
-        </thead>
-        <tbody>
-          {allSigners.map(signer => (
-            <tr key={signer}>
-              <td>{truncateAddress(signer)}</td>
-              {nonces.map(nonce => {
-                const tx = transactions.find(t => t.nonce === nonce);
-                const signed = tx?.confirmations.some(conf => conf.owner.toLowerCase() === signer.toLowerCase());
-                return <td key={`${signer}-${nonce}`}>{signed ? 'x' : ''}</td>;
-              })}
+      <>
+        <style>{`
+          .signer-participation-table {
+            width: 100%;
+            border-collapse: collapse;
+          }
+
+          .signer-participation-table th,
+          .signer-participation-table td {
+            border: 1px solid #ddd;
+            padding: 8px;
+          }
+
+          .signer-participation-table th {
+            background-color: #f5f5f5;
+          }
+
+          .signer-participation-table td:first-child {
+            text-align: left;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            max-width: 200px;
+          }
+
+          .signer-participation-table td:not(:first-child) {
+            text-align: center;
+          }
+        `}</style>
+        <table className="signer-participation-table">
+          <thead>
+            <tr>
+              <th>Signer</th>
+              {nonces.map(nonce => (
+                <th key={nonce}>{nonce}</th>
+              ))}
             </tr>
-          ))}
-        </tbody>
-      </table>
+          </thead>
+          <tbody>
+            {allSigners.map(signer => (
+              <tr key={signer}>
+                <td title={signer}>{getNameOrAddress(signer)}</td>
+                {nonces.map(nonce => {
+                  const tx = transactions.find(t => t.nonce === nonce);
+                  const signed = tx?.confirmations.some(conf => conf.owner.toLowerCase() === signer.toLowerCase());
+                  return <td key={`${signer}-${nonce}`}>{signed ? 'x' : ''}</td>;
+                })}
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </>
     );
   };
 
