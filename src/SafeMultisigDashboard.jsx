@@ -133,7 +133,41 @@ const SafeMultisigDashboard = () => {
     fetchSafeData();
   }, []);
 
-  // Filter safes based on search term
+  const calculateMSSTotal = () => {
+    return safeData
+      .filter(safe => safe.label.startsWith('MSS'))
+      .reduce((total, safe) => {
+        if (safe.error) return total;
+
+        const ethValue = parseFloat(safe.ethBalance) * prices.eth;
+        const arbValue = parseFloat(safe.arbBalance) * prices.arb;
+        const usdcValue = parseFloat(safe.usdcBalance) * prices.usdc;
+
+        return total + ethValue + arbValue + usdcValue;
+      }, 0);
+  };
+
+  const calculateTotal = () => {
+    return safeData
+      .reduce((total, safe) => {
+        if (safe.error) return total;
+
+        const ethValue = parseFloat(safe.ethBalance) * prices.eth;
+        const arbValue = parseFloat(safe.arbBalance) * prices.arb;
+        const usdcValue = parseFloat(safe.usdcBalance) * prices.usdc;
+
+        return total + ethValue + arbValue + usdcValue;
+      }, 0);
+  };
+
+  const formatUSD = (value) => {
+    return new Intl.NumberFormat('en-US', {
+      style: 'currency',
+      currency: 'USD',
+      maximumFractionDigits: 0
+    }).format(value);
+  };
+
   const filteredSafes = safeData.filter(safe =>
     safe.label.toLowerCase().includes(searchTerm.toLowerCase()) ||
     safe.address.toLowerCase().includes(searchTerm.toLowerCase())
@@ -151,14 +185,22 @@ const SafeMultisigDashboard = () => {
         <img src={arbitrumLogo} alt="Arbitrum Logo" className="header-logo arbitrum-logo" />
       </div>
 
-      <div className="search-container">
-        <input
-          type="text"
-          placeholder="Search by multisig name or address..."
-          className="search-input"
-          value={searchTerm}
-          onChange={(e) => setSearchTerm(e.target.value)}
-        />
+      <div className="search-and-total">
+        <div className="search-container">
+          <input
+            type="text"
+            placeholder="Search by multisig name or address..."
+            className="search-input"
+            value={searchTerm}
+            onChange={(e) => setSearchTerm(e.target.value)}
+          />
+        </div>
+        <div className="mss-total">
+          MSS TVL: {formatUSD(calculateMSSTotal())}
+        </div>
+        <div className="mss-total">
+          Total TVL: {formatUSD(calculateTotal())}
+        </div>
       </div>
 
       <div className="safe-grid">
