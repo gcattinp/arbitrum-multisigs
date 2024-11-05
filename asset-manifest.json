@@ -1,19 +1,19 @@
 {
   "files": {
-    "main.css": "/multisigs/static/css/main.affcb69a.css",
-    "main.js": "/multisigs/static/js/main.15ea951b.js",
-    "static/js/55.3adbe2ff.chunk.js": "/multisigs/static/js/55.3adbe2ff.chunk.js",
-    "static/js/453.c17a401e.chunk.js": "/multisigs/static/js/453.c17a401e.chunk.js",
+    "main.css": "/multisigs/static/css/main.7fa607e6.css",
+    "main.js": "/multisigs/static/js/main.5c919d15.js",
+    "static/js/926.3faecdf1.chunk.js": "/multisigs/static/js/926.3faecdf1.chunk.js",
+    "static/js/646.06bcfdd1.chunk.js": "/multisigs/static/js/646.06bcfdd1.chunk.js",
     "static/media/entropy_logo_circle copy.png": "/multisigs/static/media/entropy_logo_circle copy.c1597ce2a271d091d1fd.png",
     "static/media/arbitrum_logo.png": "/multisigs/static/media/arbitrum_logo.9d4e057bfc641bfbe082.png",
     "index.html": "/multisigs/index.html",
-    "main.affcb69a.css.map": "/multisigs/static/css/main.affcb69a.css.map",
-    "main.15ea951b.js.map": "/multisigs/static/js/main.15ea951b.js.map",
-    "55.3adbe2ff.chunk.js.map": "/multisigs/static/js/55.3adbe2ff.chunk.js.map",
-    "453.c17a401e.chunk.js.map": "/multisigs/static/js/453.c17a401e.chunk.js.map"
+    "main.7fa607e6.css.map": "/multisigs/static/css/main.7fa607e6.css.map",
+    "main.5c919d15.js.map": "/multisigs/static/js/main.5c919d15.js.map",
+    "926.3faecdf1.chunk.js.map": "/multisigs/static/js/926.3faecdf1.chunk.js.map",
+    "646.06bcfdd1.chunk.js.map": "/multisigs/static/js/646.06bcfdd1.chunk.js.map"
   },
   "entrypoints": [
-    "static/css/main.affcb69a.css",
-    "static/js/main.15ea951b.js"
+    "static/css/main.7fa607e6.css",
+    "static/js/main.5c919d15.js"
   ]
 }
