@@ -3,6 +3,7 @@ export const safeAddresses = [
   { label: "MSS Delegate Incentives", address: "0x7b79108E99b8aCe932A8737c471235F5Fb7647Df" },
   { label: "MSS Event Horizon", address: "0x8EaAf63346CAa4048e98E5502CDD1e38b9E5ff20" },
   { label: "MSS ADPC Payroll", address: "0x13d4Ff2A83fBCB8F5fc73cE66CF5928eD0943cB0" },
+  { label: "MSS ADPC Subsidies", address: "0x945F1A4F856f90e8B466a4Cf70AcfB8f78FA1915" },
   { label: "MSS Arbitrum Off-site", address: "0x0F84fa246941883Ff9ab114382Aa221CF8b6d650" },
   { label: "MSS Stylus Sprint", address: "0x0BDAFB92718759fdb1A90AF6A7455e7Cf300eB73" },
   { label: "GCP Multisig", address: "0xAe8cBcef7DE8664C3fF5BfC58536c183FfA60B51"},

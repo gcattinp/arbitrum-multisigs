@@ -2,8 +2,8 @@ import React, { useState, useEffect } from 'react';
 import { createPublicClient, http, formatEther, formatUnits, erc20Abi } from 'viem';
 import { arbitrum } from 'viem/chains';
 import { safeAddresses } from './safeAddresses';
-import { safeAbi } from './abis';
-import { ARB_TOKEN_ADDRESS, USDC_TOKEN_ADDRESS, USDCB_TOKEN_ADDRESS } from './TokenAddresses';
+import { safeAbi, arbTokenAbi } from './abis';
+import { ARB_TOKEN_ADDRESS, USDC_TOKEN_ADDRESS, USDCB_TOKEN_ADDRESS, EXCLUDE_ADDRESS } from './TokenAddresses';
 import SafeCard from './SafeCard';
 import arbitrumLogo from './images/arbitrum_logo.png';
 import entropyLogo from './images/entropy_logo_circle copy.png';
@@ -75,31 +75,41 @@ const SafeMultisigDashboard = () => {
 
         const data = await Promise.all(safeAddresses.map(async ({ label, address }) => {
           try {
-            const ethBalance = await retryWithBackoff(() => publicClient.getBalance({ address }));
-            const owners = await retryWithBackoff(() => publicClient.readContract({
-              address,
-              abi: safeAbi,
-              functionName: 'getOwners',
-            }));
-            const arbBalance = await retryWithBackoff(() => publicClient.readContract({
-              address: ARB_TOKEN_ADDRESS,
-              abi: erc20Abi,
-              functionName: 'balanceOf',
-              args: [address],
-            }));
-            const usdcBalance = await retryWithBackoff(() => publicClient.readContract({
-              address: USDC_TOKEN_ADDRESS,
-              abi: erc20Abi,
-              functionName: 'balanceOf',
-              args: [address],
-            }));
-            const usdcbBalance = await retryWithBackoff(() => publicClient.readContract({
-              address: USDCB_TOKEN_ADDRESS,
-              abi: erc20Abi,
-              functionName: 'balanceOf',
-              args: [address],
-            }));
+            const [ethBalance, owners, arbBalance, usdcBalance, usdcbBalance, delegateAddress] = await Promise.all([
+              retryWithBackoff(() => publicClient.getBalance({ address })),
+              retryWithBackoff(() => publicClient.readContract({
+                address,
+                abi: safeAbi,
+                functionName: 'getOwners',
+              })),
+              retryWithBackoff(() => publicClient.readContract({
+                address: ARB_TOKEN_ADDRESS,
+                abi: erc20Abi,
+                functionName: 'balanceOf',
+                args: [address],
+              })),
+              retryWithBackoff(() => publicClient.readContract({
+                address: USDC_TOKEN_ADDRESS,
+                abi: erc20Abi,
+                functionName: 'balanceOf',
+                args: [address],
+              })),
+              retryWithBackoff(() => publicClient.readContract({
+                address: USDCB_TOKEN_ADDRESS,
+                abi: erc20Abi,
+                functionName: 'balanceOf',
+                args: [address],
+              })),
+              retryWithBackoff(() => publicClient.readContract({
+                address: ARB_TOKEN_ADDRESS,
+                abi: arbTokenAbi,
+                functionName: 'delegates',
+                args: [address],
+              })),
+            ]);
+
             const totalUsdcBalance = usdcBalance + usdcbBalance;
+            const isExcluded = delegateAddress.toLowerCase() === EXCLUDE_ADDRESS.toLowerCase();
             return {
               label,
               address,
@@ -107,6 +117,8 @@ const SafeMultisigDashboard = () => {
               arbBalance: formatUnits(arbBalance, 18),
               usdcBalance: formatUnits(totalUsdcBalance, 6),
               owners: sortAddresses(owners),
+              delegateAddress,
+              isExcluded,
               error: null
             };
           } catch (err) {
@@ -118,6 +130,8 @@ const SafeMultisigDashboard = () => {
               arbBalance: null,
               usdcBalance: null,
               owners: null,
+              delegateAddress: null,
+              isExcluded: null,
               error: err.message
             };
           }

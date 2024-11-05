@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { Card, CardHeader, CardContent } from './components/ui/card';
+import { Shield, ShieldOff } from 'lucide-react';
 import TransactionModal from './TransactionModal';
 import { getNameOrAddress } from './addressMapping';
 
@@ -23,31 +24,11 @@ const SafeCard = ({ safe, prices }) => {
 
   return (
     <>
-      <style>{`
-        .signers-list {
-          list-style: none;
-          padding: 0;
-          margin: 0;
-        }
-
-        .signer-address {
-          text-align: left;
-          padding: 2px 0;
-          white-space: nowrap;
-          overflow: hidden;
-          text-overflow: ellipsis;
-        }
-
-        .balance-info p {
-          display: flex;
-          justify-content: space-between;
-          align-items: center;
-        }
-      `}</style>
-
       <Card onClick={handleCardClick}>
         <CardHeader>
-          <h2 className="safe-label">{safe.label}</h2>
+          <div className="flex justify-between items-center">
+            <h2 className="safe-label">{safe.label}</h2>
+          </div>
           <p className="safe-address" title={safe.address}>
             {safe.address}
           </p>
@@ -90,6 +71,28 @@ const SafeCard = ({ safe, prices }) => {
                   <strong></strong>
                   <span>{formatUSD(calculateTotalUSD(safe, prices))}</span>
                 </p>
+              </div>
+            </div>
+          )}
+          {safe.arbBalance && parseFloat(safe.arbBalance) > 0 && (
+            <div className="delegation-status-wrapper">
+              <div
+                className={`delegation-status ${safe.isExcluded ? 'excluded' : 'not-excluded'}`}
+                title={safe.isExcluded ?
+                  "This multisig has delegated to the exclude address" :
+                  "This multisig has not delegated to the exclude address"}
+              >
+                {safe.isExcluded ? (
+                  <>
+                    <Shield className="delegation-icon" size={16} />
+                    <span>Delegated to exclude address</span>
+                  </>
+                ) : (
+                  <>
+                    <ShieldOff className="delegation-icon" size={16} />
+                    <span>Not delegated to exclude address</span>
+                  </>
+                )}
               </div>
             </div>
           )}
