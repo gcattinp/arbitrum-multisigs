@@ -22,5 +22,7 @@ export const safeAddresses = [
   { label: "Questbook: Education, Community Growth and Events v1", address: "0x1191eFE82884eA1089AC51E894d1559df2E350C0" },
   { label: "Questbook: Arbitrum Gaming v1", address: "0xebe67F2ceD2780321903CA7C6602C914262eb2DC" },
   { label: "Questbook: Dev Tooling on One and NOVA v1", address: "0x3dFe378547104ddF6e80fF26D1681a6D7A9f1aF0" },
-  { label: "Questbook: Program Manager", address: "0xB7c1551BBEB47Eb86266153df5F9D7dA47F08308" }
+  { label: "Questbook: Program Manager", address: "0xB7c1551BBEB47Eb86266153df5F9D7dA47F08308" },
+  { label: "ARDC v2", address: "0x8deBa81C874C68C27a09706CdEa50d4F727E0711" },
+  { label: "DAO Events Budget", address: "0xd767Eaf0cb35B55587A2E12F387c2AaD65b5930C" }
 ];
